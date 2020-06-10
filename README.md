@@ -8,7 +8,7 @@ A demonstration of soft body simulation running in the browser using [ECSY](http
 
 See the live demo [here](https://philsawicki.github.io/soft-body-simulation).
 
-[![./docs/demo.gif](./docs/demo.gif "Soft Body simulation")](https://philsawicki.github.io/soft-body-simulation)
+[![./docs/soft-body-demo.gif](./docs/soft-body-demo.gif "Soft Body simulation")](https://philsawicki.github.io/soft-body-simulation)
 
 ## Installation
 
