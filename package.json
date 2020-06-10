@@ -7,11 +7,14 @@
     "build": "rollup -c rollup.config.dev.js",
     "build:prod": "rollup -c rollup.config.js",
     "build:watch": "npm run build -- --watch",
-    "deploy": "rollup:prod && gh-pages -d dist -m \"Update live website.\"",
+    "deploy": "npm run build:prod && gh-pages -d dist -m \"Update live website.\"",
     "serve": "node --experimental-modules server.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["wasm", "simulation"],
+  "keywords": [
+    "wasm",
+    "simulation"
+  ],
   "author": {
     "name": "Philippe Sawicki",
     "url": "https://philippesawicki.com"
