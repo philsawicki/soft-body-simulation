@@ -1,0 +1,17 @@
+# Wavefront material library
+# Tue Aug 03 07:48:12 1999
+# Created with Viewpoint Interchange www.viewpoint.com
+
+newmtl octo_body
+  Ka 0 0 0
+  Kd 0 0 0
+  Ks 0 0 0
+  illum 2
+  map_Kd octo_t.tif
+
+newmtl octo_bottom
+  Ka 0 0 0
+  Kd 0 0 0
+  Ks 0 0 0
+  illum 2
+  map_Kd octo_b.tif

@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <title>Soft Body simulation</title>
+    <meta name="author" content="Philippe Sawicki" />
+    <meta name="description" content="Soft Body simulation" />
+
+    <link rel="modulepreload" crossorigin href="js/app.min.js" />
+    <link rel="preload" as="fetch" crossorigin href="ammo.wasm.wasm" />
+    <link rel="preload" as="image" crossorigin href="textures/wood-floor-7/Wood_Floor_007_COLOR.jpg" />
+    <!-- <link rel="preload" as="image" crossorigin href="textures/wood-floor-7/Wood_Floor_007_DISP.png" /> -->
+    <link rel="preload" as="image" crossorigin href="textures/wood-floor-7/Wood_Floor_007_NORM.jpg" />
+    <link rel="preload" as="image" crossorigin href="textures/wood-floor-7/Wood_Floor_007_OCC.jpg" />
+    <link rel="preload" as="image" crossorigin href="textures/wood-floor-7/Wood_Floor_007_ROUGH.jpg" />
+    <link rel="preload" as="image" crossorigin href="textures/skin/Skin_Human_002_COLOR.png" />
+    <!-- <link rel="preload" as="image" crossorigin href="textures/skin/Skin_Human_002_DISP.png" /> -->
+    <link rel="preload" as="image" crossorigin href="textures/skin/Skin_Human_002_NRM.png" />
+    <link rel="preload" as="image" crossorigin href="textures/skin/Skin_Human_002_OCC.png" />
+    <link rel="preload" as="image" crossorigin href="textures/skin/Skin_Human_002_SPEC.png" />
+    <link rel="preload" as="image" crossorigin href="textures/cube-map/px.jpg" />
+    <link rel="preload" as="image" crossorigin href="textures/cube-map/nx.jpg" />
+    <link rel="preload" as="image" crossorigin href="textures/cube-map/py.jpg" />
+    <link rel="preload" as="image" crossorigin href="textures/cube-map/ny.jpg" />
+    <link rel="preload" as="image" crossorigin href="textures/cube-map/pz.jpg" />
+    <link rel="preload" as="image" crossorigin href="textures/cube-map/nz.jpg" />
+    <link rel="preload" as="image" crossorigin href="textures/marble-tiles-1/Marble_Tiles_001_ambientOcclusion.jpg" />
+    <link rel="preload" as="image" crossorigin href="textures/marble-tiles-1/Marble_Tiles_001_basecolor.jpg" />
+    <link rel="preload" as="image" crossorigin href="textures/marble-tiles-1/Marble_Tiles_001_height.png" />
+    <link rel="preload" as="image" crossorigin href="textures/marble-tiles-1/Marble_Tiles_001_normal.jpg" />
+    <link rel="preload" as="image" crossorigin href="textures/marble-tiles-1/Marble_Tiles_001_roughness.jpg" />
+    <!-- <link rel="preload" as="image" crossorigin href="textures/metal-grunge-4/Metal_Grunge_004_COLOR.jpg" />
+    <link rel="preload" as="image" crossorigin href="textures/metal-grunge-4/Metal_Grunge_004_DISP.png" />
+    <link rel="preload" as="image" crossorigin href="textures/metal-grunge-4/Metal_Grunge_004_NORM.jpg" />
+    <link rel="preload" as="image" crossorigin href="textures/metal-grunge-4/Metal_Grunge_004_OCC.jpg" />
+    <link rel="preload" as="image" crossorigin href="textures/metal-grunge-4/Metal_Grunge_004_ROUGH.jpg" /> -->
+
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+
+    <style type="text/css">
+        body {
+            margin: 0;
+            background-color: #ccc;
+            color: #000;
+            font-family: Monospace;
+            font-size: 1.25rem;
+            font-weight: 600;
+            overscroll-behavior: none;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        #info {
+            position: absolute;
+            top: 0px;
+            width: 100%;
+            padding: 15px;
+            box-sizing: border-box;
+            text-align: center;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: none;
+            z-index: 1; /* TODO Solve this in HTML */
+        }
+
+        main {
+            height: 100vh;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            resize: both;
+            overflow: auto;
+
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: loading-gradient 15s ease;
+            animation-delay: -8.75s;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+
+            position: relative;
+            margin: 100px auto;
+
+            color: #fff;
+            resize: both;
+            overflow: auto;
+        }
+
+        .double-bounce1,
+        .double-bounce2 {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: #fff;
+            opacity: 0.6;
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            animation: sk-bounce 2.0s infinite ease-in-out;
+        }
+
+        .double-bounce2 {
+            animation-delay: -1.0s;
+        }
+
+        @keyframes sk-bounce {
+            0%, 100% {
+            transform: scale(0.0);
+            }
+            50% {
+            transform: scale(1.0);
+            }
+        }
+
+        @keyframes loading-gradient {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="info" class="hidden">
+        <div>
+            Click to throw a ball
+            <br />Click &amp; drag to orbit
+        </div>
+    </div>
+
+    <main id="container">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </main>
+
+    <script async type="module" src="js/app.min.js"></script>
+</body>
+</html>
