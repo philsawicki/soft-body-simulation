@@ -1,0 +1,8 @@
+node_modules/*
+dist/js/app.min.js*
+dist/models/*
+dist/textures/abstract*
+dist/textures/metal-grill*
+dist/textures/metal-plate*
+dist/textures/tiles*
+.DS_Store

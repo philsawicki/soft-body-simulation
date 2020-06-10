@@ -1,0 +1,32 @@
+{
+  "name": "soft-body-simulation",
+  "version": "1.0.0",
+  "description": "Soft Body physics simulation",
+  "browser": "js/index.js",
+  "scripts": {
+    "build": "rollup -c rollup.config.dev.js",
+    "build:prod": "rollup -c rollup.config.js",
+    "build:watch": "npm run build -- --watch",
+    "deploy": "rollup:prod && gh-pages -d dist -m \"Update live website.\"",
+    "serve": "node --experimental-modules server.mjs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["wasm", "simulation"],
+  "author": {
+    "name": "Philippe Sawicki",
+    "url": "https://philippesawicki.com"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "dat.gui": "^0.7.7",
+    "ecsy": "^0.2.6",
+    "stats.js": "^0.17.0",
+    "three": "^0.117.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^8.0.1",
+    "gh-pages": "^3.0.0",
+    "rollup": "^2.15.0",
+    "rollup-plugin-terser": "^6.1.0"
+  }
+}
