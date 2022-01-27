@@ -24,7 +24,7 @@
     "dat.gui": "^0.7.7",
     "ecsy": "^0.2.6",
     "stats.js": "^0.17.0",
-    "three": "^0.117.1"
+    "three": "^0.137.0"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^8.0.1",
